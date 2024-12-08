@@ -30,30 +30,27 @@ public class AuthController {
     @Autowired
     private JwtEncoder jwtEncoder;
 
-   @PostMapping("/login")
-public ResponseEntity<MessageWithToken> login(@RequestBody @Valid AuthDTO account) {
-    try {
-        final Usuario usuarioAutenticado = service.makeLogin(account);
+    @PostMapping("/login")
+    public ResponseEntity<MessageWithToken> login(@RequestBody @Valid AuthDTO account) {
+        try {
+            final Usuario usuarioAutenticado = service.makeLogin(account);
 
-        return ResponseEntity.ok(
-            new MessageWithToken(
-                "Login bem-sucedido",
-                new AuthTokenJWT(Token.generateTokenJWT(jwtEncoder, usuarioAutenticado),
-                        Token.generateTokenExpirationTime())
-            )
-        );
-    } catch (BadCredentialsException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(new MessageWithToken(e.getMessage(), null));
-    } catch (EntityNotFoundException e) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(new MessageWithToken("Usuário não encontrado", null));
-    } catch (Exception e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new MessageWithToken("Erro interno no servidor", null));
+            return ResponseEntity.ok(
+                    new MessageWithToken(
+                            "Login bem-sucedido",
+                            new AuthTokenJWT(Token.generateTokenJWT(jwtEncoder, usuarioAutenticado),
+                                    Token.generateTokenExpirationTime())));
+        } catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new MessageWithToken(e.getMessage(), null));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new MessageWithToken("Usuário não encontrado", null));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new MessageWithToken("Erro interno no servidor", null));
+        }
     }
-}
-
 
     @PostMapping("/signin-usuario")
     @Transactional
@@ -63,7 +60,8 @@ public ResponseEntity<MessageWithToken> login(@RequestBody @Valid AuthDTO accoun
             final Usuario usuarioCriado = service.createUsuario(usuario);
 
             return ResponseEntity
-                    .ok(new MessageWithToken("Usuário criado com sucesso! Será enviado no seu e-mail cadastrado a senha para acesso.",
+                    .ok(new MessageWithToken(
+                            "Usuário criado com sucesso! Será enviado no seu e-mail cadastrado a senha para acesso.",
                             new AuthTokenJWT(Token.generateTokenJWT(jwtEncoder, usuarioCriado),
                                     Token.generateTokenExpirationTime())));
         } catch (Exception e) {
