@@ -107,6 +107,7 @@ public class UsuarioService {
         Funcionario funcionario = new Funcionario();
         funcionario.setUsuario(repository.save(usuario));
         funcionario.setDataNascimento(create.getDataNascimento());
+        funcionario.setCargo("F");
 
         funcionarioRepository.save(funcionario);
 

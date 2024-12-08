@@ -9,5 +9,6 @@ public class CreateFuncionarioDTO {
     private String nome;
     private String email;
     private String senha;
+    private String cargo;
     private LocalDate dataNascimento;
 }

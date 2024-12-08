@@ -34,4 +34,7 @@ public class Funcionario {
 
     @NotNull
     private LocalDate dataNascimento;
+
+    @NotNull
+    private String cargo;
 }

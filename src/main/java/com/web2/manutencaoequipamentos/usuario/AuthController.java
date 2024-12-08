@@ -63,7 +63,7 @@ public ResponseEntity<MessageWithToken> login(@RequestBody @Valid AuthDTO accoun
             final Usuario usuarioCriado = service.createUsuario(usuario);
 
             return ResponseEntity
-                    .ok(new MessageWithToken("Usuario criado, será enviado no seu e-mail a senha para login",
+                    .ok(new MessageWithToken("Usuário criado com sucesso! Será enviado no seu e-mail cadastrado a senha para acesso.",
                             new AuthTokenJWT(Token.generateTokenJWT(jwtEncoder, usuarioCriado),
                                     Token.generateTokenExpirationTime())));
         } catch (Exception e) {
