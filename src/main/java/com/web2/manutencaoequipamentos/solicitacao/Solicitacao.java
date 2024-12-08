@@ -1,7 +1,9 @@
 package com.web2.manutencaoequipamentos.solicitacao;
 
 import jakarta.persistence.*;
-import java.util.Date;
+
+import com.web2.manutencaoequipamentos.cliente.Cliente;
+import com.web2.manutencaoequipamentos.funcionario.Funcionario;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +20,11 @@ public class Solicitacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private String nomeCliente;
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Cliente cliente;
+
+    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    private Funcionario funcionario;
 
     @Column(nullable = false)
     private String equipamento;
@@ -37,12 +42,21 @@ public class Solicitacao {
     private Double valorOrcamento;
 
     @Column(nullable = false)
-    private String funcionarioOrcamento;
+    private String criada;
 
     @Column(nullable = false)
     private String dataOrcamento;
 
-    @Temporal(TemporalType.TIMESTAMP) 
-    private Date datahora;
+    @Column(nullable = false)
+    private String dataAprovadoRejeitado;
+
+    @Column(nullable = false)
+    private String dataPagamento;
+
+    @Column(nullable = false)
+    private String dataEfetuada;
+
+    @Column(nullable = false)
+    private String dataFinalizada ;
 
 }

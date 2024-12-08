@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.web2.manutencaoequipamentos.security.AuthDTO;
 import com.web2.manutencaoequipamentos.security.AuthTokenJWT;
 import com.web2.manutencaoequipamentos.security.Token;
+import com.web2.manutencaoequipamentos.usuario.Dto.CreateFuncionarioDTO;
 import com.web2.manutencaoequipamentos.usuario.Dto.CreateUsuarioDTO;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -54,15 +55,32 @@ public ResponseEntity<MessageWithToken> login(@RequestBody @Valid AuthDTO accoun
 }
 
 
-    @PostMapping("/signin")
+    @PostMapping("/signin-usuario")
     @Transactional
     public ResponseEntity<MessageWithToken> create(@RequestBody @Valid CreateUsuarioDTO usuario) {
 
         try {
-            final Usuario usuarioCriado = service.create(usuario);
+            final Usuario usuarioCriado = service.createUsuario(usuario);
 
             return ResponseEntity
                     .ok(new MessageWithToken("Usuario criado, será enviado no seu e-mail a senha para login",
+                            new AuthTokenJWT(Token.generateTokenJWT(jwtEncoder, usuarioCriado),
+                                    Token.generateTokenExpirationTime())));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageWithToken(e.getMessage(), null));
+        }
+
+    }
+
+    @PostMapping("/signin-funcionario")
+    @Transactional
+    public ResponseEntity<MessageWithToken> create(@RequestBody @Valid CreateFuncionarioDTO funcionario) {
+
+        try {
+            final Usuario usuarioCriado = service.createFuncionario(funcionario);
+
+            return ResponseEntity
+                    .ok(new MessageWithToken("Funcionário criado com sucesso!",
                             new AuthTokenJWT(Token.generateTokenJWT(jwtEncoder, usuarioCriado),
                                     Token.generateTokenExpirationTime())));
         } catch (Exception e) {

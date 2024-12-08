@@ -1,5 +1,6 @@
 package com.web2.manutencaoequipamentos.funcionario;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 import com.web2.manutencaoequipamentos.usuario.Usuario;
@@ -12,7 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,6 +32,6 @@ public class Funcionario {
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private Usuario usuario;
 
-    @NotBlank
-    private String cargo;
+    @NotNull
+    private LocalDate dataNascimento;
 }
