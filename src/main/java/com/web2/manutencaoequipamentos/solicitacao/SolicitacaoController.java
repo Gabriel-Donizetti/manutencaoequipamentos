@@ -21,14 +21,14 @@ public class SolicitacaoController {
 
     @PostMapping()
     @Transactional
-    public ResponseEntity<String> criarSolicitacao(@RequestBody CreateSolicitacaoDTO create, JwtAuthenticationToken token) {
+    public ResponseEntity<Message> criarSolicitacao(@RequestBody CreateSolicitacaoDTO create, JwtAuthenticationToken token) {
         try {
 
             solicitacaoService.createSolicitacao(create, Token.getidAccount(token));
 
-            return ResponseEntity.ok("Solicitação criada com sucesso!");
+            return ResponseEntity.ok(new Message("Solicitação criada com sucesso!"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Erro: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new Message("Erro: " + e.getMessage()));
         }
     }
 
