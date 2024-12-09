@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.persistence.EntityNotFoundException;
@@ -34,6 +35,19 @@ public class FuncionarioController {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new MessageWithArray("Erro ao buscar funcionários: " + e.getMessage(), null));
+        }
+    }
+
+    @GetMapping("/porId")
+    public ResponseEntity<SingleMessageWithArray> getFuncionario(JwtAuthenticationToken token, @RequestParam("id") UUID id) {
+        try {
+            Funcionario funcionario = funcionarioService.buscarPorId(id);
+
+            return ResponseEntity.ok(new SingleMessageWithArray("Funcionário", funcionario));
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new SingleMessageWithArray("Erro ao buscar funcionários: " + e.getMessage(), null));
         }
     }
 
@@ -78,7 +92,9 @@ public class FuncionarioController {
         }
     }
 
-    public record MessageWithArray(String message, List<Funcionario> list) {
+    public record MessageWithArray(String message, List<Funcionario> list) {}
+
+    public record SingleMessageWithArray(String message, Funcionario f) {
     }
 
 }

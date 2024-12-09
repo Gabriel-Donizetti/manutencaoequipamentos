@@ -1,12 +1,14 @@
 package com.web2.manutencaoequipamentos.solicitacao;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.web2.manutencaoequipamentos.cliente.ClientRepository;
 import com.web2.manutencaoequipamentos.cliente.Cliente;
+import com.web2.manutencaoequipamentos.funcionario.Funcionario;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -27,24 +29,29 @@ public class SolicitacaoService {
         List<Solicitacao> solicitacoes = repository.findAll();
 
         if (solicitacoes.isEmpty()) {
-            throw new EntityNotFoundException("Nenhum funcionário encontrado.");
+            throw new EntityNotFoundException("Nenhuma Solicitação encontrado.");
         }
 
         return solicitacoes;
     }
 
-    public Solicitacao createSolicitacao(CreateSolicitacaoDTO create) {
+    public Solicitacao createSolicitacao(CreateSolicitacaoDTO create, UUID id) {
         Solicitacao solicitacao = new Solicitacao();
-
-        solicitacao.setCategoria(create.getCategoria());
-        solicitacao.setDefeito(create.getDefeito());
-        solicitacao.setEquipamento(create.getEquipamento());
 
         Cliente cliente = clienteRepository.findById(create.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
+        Funcionario funcionario = repository.findFuncionarioComMenosSolicitacoes();
+
+        if (funcionario == null) {
+            throw new EntityNotFoundException("Funcionário não encontrado.");
+        }
+
+        solicitacao.setCategoria(create.getCategoria());
+        solicitacao.setDefeito(create.getDefeito());
+        solicitacao.setEquipamento(create.getEquipamento());
         solicitacao.setCliente(cliente);
-        solicitacao.setDataCriada(create.getDataCriada());
+        solicitacao.setFuncionario(funcionario);
 
         return solicitacao;
     }

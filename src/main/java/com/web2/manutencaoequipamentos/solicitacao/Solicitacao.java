@@ -47,19 +47,19 @@ public class Solicitacao {
     @Column(nullable = false)
     private LocalDate dataCriada;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate dataOrcamento;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate dataAprovadoRejeitado;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate dataPagamento;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate dataEfetuada;
 
-    @Column(nullable = false)
+    @Column()
     private LocalDate dataFinalizada ;
 
 }
