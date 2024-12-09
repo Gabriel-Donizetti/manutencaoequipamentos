@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.web2.manutencaoequipamentos.cliente.ClientRepository;
 import com.web2.manutencaoequipamentos.cliente.Cliente;
-import com.web2.manutencaoequipamentos.funcionario.Funcionario;
 
 import jakarta.persistence.EntityNotFoundException;
 

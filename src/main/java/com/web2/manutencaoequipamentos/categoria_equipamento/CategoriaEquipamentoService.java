@@ -1,20 +1,20 @@
 package com.web2.manutencaoequipamentos.categoria_equipamento;
 
+import java.util.Optional;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.web2.manutencaoequipamentos.categoria_equipamento.*;;
+import jakarta.persistence.EntityNotFoundException;;
 
 @Service
 public class CategoriaEquipamentoService {
-    
+
     @Autowired
     private CategoriaEquipamentoRepository categoriaRepository;
 
-    public CategoriaEquipamento createEquipamento(CategoriaEquipamentoDTO create){
+    public CategoriaEquipamento createEquipamento(CategoriaEquipamentoDTO create) {
         CategoriaEquipamento categoria = new CategoriaEquipamento();
 
         categoria.setNome(create.getNome());
@@ -23,4 +23,26 @@ public class CategoriaEquipamentoService {
 
         return categoria;
     }
+
+    public CategoriaEquipamento updateEquip(UUID id, CategoriaEquipamentoDTO dto) {
+        CategoriaEquipamento equipamento = categoriaRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Categoria não encontrada com o id: " + id));
+    
+        equipamento.setNome(dto.getNome());
+        return categoriaRepository.save(equipamento);
+    }
+
+    public void deleteEquip(UUID id) {
+
+        Optional<CategoriaEquipamento> equipamentoOptional = categoriaRepository.findById(id);
+
+        if (equipamentoOptional.isEmpty()) {
+            throw new EntityNotFoundException("Categoria de Equipamento não encontrada para o ID: " + id);
+        }
+
+        CategoriaEquipamento equipamento = equipamentoOptional.get();
+
+        categoriaRepository.delete(equipamento);
+    }
+
 }
