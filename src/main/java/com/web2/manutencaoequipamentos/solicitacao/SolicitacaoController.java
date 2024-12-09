@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.web2.manutencaoequipamentos.security.Token;
+
 import jakarta.transaction.Transactional;
 
 @RestController
@@ -24,9 +26,10 @@ public class SolicitacaoController {
 
     @PostMapping()
     @Transactional
-    public ResponseEntity<String> criarSolicitacao(@RequestBody CreateSolicitacaoDTO create) {
+    public ResponseEntity<String> criarSolicitacao(@RequestBody CreateSolicitacaoDTO create, JwtAuthenticationToken token) {
         try {
-            solicitacaoService.createSolicitacao(create);
+
+            solicitacaoService.createSolicitacao(create, Token.getidAccount(token));
 
             return ResponseEntity.ok("Solicitação criada com sucesso!");
         } catch (Exception e) {
@@ -34,31 +37,18 @@ public class SolicitacaoController {
         }
     }
 
-    @GetMapping()
-    public ResponseEntity<MessageWithArray> getSolicitacoes(JwtAuthenticationToken token) {
-        try {
-            List<Solicitacao> solicitacoes = solicitacaoService.listarTodos();
-
-            return ResponseEntity.ok(new MessageWithArray("Solicitacoes: ", solicitacoes));
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new MessageWithArray("Erro ao buscar solicitacoes: " + e.getMessage(), null));
-        }
-    }
-
     @GetMapping("/solicitacoesUsuario")
-    public void getSolicituacoesByUsuario() {
+    public void getSolicituacoesByUsuario(JwtAuthenticationToken token) {
 
     }
 
     @GetMapping("/solicitacoesFuncionario")
-    public void getSolicituacoesByFuncionario() {
+    public void getSolicituacoesByFuncionario(JwtAuthenticationToken token) {
 
     }
 
-    @PutMapping("/{id}")
-    public void updateSolicitacao() {
+    @PutMapping()
+    public void updateSolicitacao(@RequestBody CreateSolicitacaoDTO update, JwtAuthenticationToken token) {
 
     }
 
