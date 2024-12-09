@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,6 +70,19 @@ public class CategoriaEquipamentoController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(new Message("Erro:" + e.getMessage()));
         }
 
+    }
+
+    @GetMapping("/equips")
+    @Transactional
+    public ResponseEntity<MessageWithArray> listAll(JwtAuthenticationToken token){
+        try {
+            List<String> equipNames = equipService.findAllNames();
+            
+            return ResponseEntity.ok(new MessageWithArray("Categorias:",equipNames));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageWithArray("Erro:" + e.getMessage(),null));
+        }
+        
     }
 
     public record Message(String message) {
