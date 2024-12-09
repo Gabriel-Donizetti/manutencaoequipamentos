@@ -77,7 +77,7 @@ public class CategoriaEquipamentoController {
     @Transactional
     public ResponseEntity<MessageWithArray> listAll(JwtAuthenticationToken token){
         try {
-            List<String> equipNames = equipService.findAllNames(); // Retorna os nomes
+            List<String> equipNames = equipService.findAllNames();
             
             return ResponseEntity.ok(new MessageWithArray("Categorias:",equipNames));
         } catch (Exception e) {
