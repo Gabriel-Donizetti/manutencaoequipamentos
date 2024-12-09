@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.web2.manutencaoequipamentos.funcionario.Funcionario;
 
+import jakarta.mail.Message;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -71,10 +73,24 @@ public class CategoriaEquipamentoController {
 
     }
 
+    @GetMapping("/equips")
+    @Transactional
+    public ResponseEntity<MessageWithArray> listAll(JwtAuthenticationToken token){
+        try {
+            List<String> equipNames = equipService.findAllNames(); // Retorna os nomes
+            
+            return ResponseEntity.ok(new MessageWithArray("Categorias:",equipNames));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(new MessageWithArray("Erro:" + e.getMessage(),null));
+        }
+        
+    }
+
     public record Message(String message) {
     }
 
-    public record MessageWithArray(String message, List<Funcionario> list) {
+    public record MessageWithArray(String message, List<String> list) {
     }
+
 
 }

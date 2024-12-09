@@ -1,9 +1,11 @@
 package com.web2.manutencaoequipamentos.categoria_equipamento;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import jakarta.persistence.EntityNotFoundException;;
@@ -44,5 +46,13 @@ public class CategoriaEquipamentoService {
 
         categoriaRepository.delete(equipamento);
     }
+    List<String> findAllNames(){
+        List<CategoriaEquipamento> lista = categoriaRepository.findAll();
+        return lista.stream()
+        .map(CategoriaEquipamento::getNome) // Mapeia o nome de cada objeto
+        .toList();
+    }
+
+
 
 }
