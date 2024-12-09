@@ -11,7 +11,7 @@ import com.web2.manutencaoequipamentos.funcionario.Funcionario;
 public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> {
 
     @Query(value = "SELECT funcionario_idfuncionario, COUNT(*) AS quantidade_solicitacoes " +
-            "FROM solicitacao GROUP BY funcionario_id ORDER BY quantidade_solicitacoes ASC LIMIT 1", nativeQuery = true)
+            "FROM solicitacao GROUP BY funcionario_idfuncionario ORDER BY quantidade_solicitacoes ASC LIMIT 1", nativeQuery = true)
     Funcionario findFuncionarioComMenosSolicitacoes();
 
     List<Solicitacao> findByCliente_IdCliente(UUID clienteId);
