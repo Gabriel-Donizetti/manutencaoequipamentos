@@ -1,24 +1,20 @@
 package com.web2.manutencaoequipamentos.solicitacao;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.web2.manutencaoequipamentos.security.Token;
 
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
-@RequestMapping("api/v1/solicitacao")
+@RequestMapping("/api/solicitacoes")
 public class SolicitacaoController {
 
     @Autowired
@@ -38,21 +34,29 @@ public class SolicitacaoController {
     }
 
     @GetMapping("/solicitacoesUsuario")
-    public void getSolicituacoesByUsuario(JwtAuthenticationToken token) {
+    public MessageWithArray getSolicitacoesByUsuario(JwtAuthenticationToken token) {
 
+        List<Solicitacao> solicitacoes = solicitacaoService.listarTodosPorCliente(Token.getidAccount(token));
+        return new MessageWithArray("Solicitações recuperadas com sucesso.", solicitacoes);
     }
 
     @GetMapping("/solicitacoesFuncionario")
-    public void getSolicituacoesByFuncionario(JwtAuthenticationToken token) {
+    public MessageWithArray getSolicitacoesByFuncionario(JwtAuthenticationToken token) {
 
+        List<Solicitacao> solicitacoes = solicitacaoService.listarTodosPorFuncionario(Token.getidAccount(token));
+        return new MessageWithArray("Solicitações recuperadas com sucesso.", solicitacoes);
     }
 
     @PutMapping()
-    public void updateSolicitacao(@RequestBody CreateSolicitacaoDTO update, JwtAuthenticationToken token) {
-
+    public Message updateSolicitacao(@RequestParam("id") Long id, @RequestBody CreateSolicitacaoDTO update, JwtAuthenticationToken token) {
+       
+        solicitacaoService.updateSolicitacao(update, id);
+        return new Message("Solicitação atualizada com sucesso.");
     }
 
     public record MessageWithArray(String message, List<Solicitacao> list) {
     }
 
+    public record Message(String message) {
+    }
 }

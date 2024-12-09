@@ -29,7 +29,7 @@ public class SolicitacaoService {
         List<Solicitacao> solicitacoes = repository.findAll();
 
         if (solicitacoes.isEmpty()) {
-            throw new EntityNotFoundException("Nenhuma Solicitação encontrado.");
+            throw new EntityNotFoundException("Nenhuma Solicitação encontrada.");
         }
 
         return solicitacoes;
@@ -53,7 +53,44 @@ public class SolicitacaoService {
         solicitacao.setCliente(cliente);
         solicitacao.setFuncionario(funcionario);
 
-        return solicitacao;
+        return repository.save(solicitacao);
     }
 
+    public List<Solicitacao> listarTodosPorCliente(UUID clienteId) {
+        List<Solicitacao> solicitacoes = repository.findByClienteId(clienteId);
+
+        if (solicitacoes.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma solicitação encontrada para o cliente informado.");
+        }
+
+        return solicitacoes;
+    }
+
+    public List<Solicitacao> listarTodosPorFuncionario(UUID funcionarioId) {
+        List<Solicitacao> solicitacoes = repository.findByFuncionarioId(funcionarioId);
+
+        if (solicitacoes.isEmpty()) {
+            throw new EntityNotFoundException("Nenhuma solicitação encontrada para o funcionário informado.");
+        }
+
+        return solicitacoes;
+    }
+
+    public Solicitacao updateSolicitacao(CreateSolicitacaoDTO update, Long solicitacaoId) {
+        Solicitacao solicitacao = repository.findById(solicitacaoId)
+                .orElseThrow(() -> new EntityNotFoundException("Solicitação não encontrada."));
+
+        solicitacao.setCategoria(update.getCategoria());
+        solicitacao.setDefeito(update.getDefeito());
+        solicitacao.setEquipamento(update.getEquipamento());
+        solicitacao.setEstado(update.getEstado());
+        solicitacao.setValorOrcamento(update.getValorOrcamento());
+        solicitacao.setDataOrcamento(update.getDataOrcamento());
+        solicitacao.setDataAprovadoRejeitado(update.getDataAprovadoRejeitado());
+        solicitacao.setDataPagamento(update.getDataPagamento());
+        solicitacao.setDataEfetuada(update.getDataEfetuada());
+        solicitacao.setDataFinalizada(update.getDataFinalizada());
+
+        return repository.save(solicitacao);
+    }
 }
