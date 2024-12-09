@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.web2.manutencaoequipamentos.funcionario.Funcionario;
-
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 
@@ -88,7 +86,7 @@ public class CategoriaEquipamentoController {
     public record Message(String message) {
     }
 
-    public record MessageWithArray(String message, List<Funcionario> list) {
+    public record MessageWithArray(String message, List<String> list) {
     }
 
 }
