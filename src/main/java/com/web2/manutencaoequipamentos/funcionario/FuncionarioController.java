@@ -92,8 +92,7 @@ public class FuncionarioController {
         }
     }
 
-    public record MessageWithArray(String message, List<Funcionario> list) {
-    }
+    public record MessageWithArray(String message, List<Funcionario> list) {}
 
     public record SingleMessageWithArray(String message, Funcionario f) {
     }
