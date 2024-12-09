@@ -2,6 +2,8 @@ package com.web2.manutencaoequipamentos.solicitacao;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+
 import com.web2.manutencaoequipamentos.cliente.Cliente;
 import com.web2.manutencaoequipamentos.funcionario.Funcionario;
 
@@ -20,7 +22,8 @@ public class Solicitacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id", referencedColumnName = "idcliente")
     private Cliente cliente;
 
     @OneToOne(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
@@ -42,21 +45,21 @@ public class Solicitacao {
     private Double valorOrcamento;
 
     @Column(nullable = false)
-    private String criada;
+    private LocalDate dataCriada;
 
     @Column(nullable = false)
-    private String dataOrcamento;
+    private LocalDate dataOrcamento;
 
     @Column(nullable = false)
-    private String dataAprovadoRejeitado;
+    private LocalDate dataAprovadoRejeitado;
 
     @Column(nullable = false)
-    private String dataPagamento;
+    private LocalDate dataPagamento;
 
     @Column(nullable = false)
-    private String dataEfetuada;
+    private LocalDate dataEfetuada;
 
     @Column(nullable = false)
-    private String dataFinalizada ;
+    private LocalDate dataFinalizada ;
 
 }

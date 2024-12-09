@@ -14,14 +14,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @RestController
 @RequestMapping("api/v1/funcionario/")
 public class FuncionarioController {
 
-  @Autowired
+    @Autowired
     private FuncionarioService funcionarioService;
 
-    @GetMapping
+    @GetMapping()
     public ResponseEntity<MessageWithArray> getFuncionarios() {
         try {
             List<Funcionario> funcionarios = funcionarioService.listarTodos();
@@ -35,14 +37,10 @@ public class FuncionarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<MessageWithArray> updateFuncionario(@PathVariable("id") UUID id,  @RequestBody Funcionario funcionarioAtualizado) {
+    public ResponseEntity<MessageWithArray> updateFuncionario(@PathVariable("id") UUID id,
+            @RequestBody Funcionario funcionarioAtualizado) {
         try {
             Funcionario funcionarioExistente = funcionarioService.buscarPorId(id);
-
-            if (funcionarioExistente == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body(new MessageWithArray("Funcionário não encontrado", null));
-            }
 
             funcionarioExistente.setCargo(funcionarioAtualizado.getCargo());
             funcionarioExistente.setDataNascimento(funcionarioAtualizado.getDataNascimento());
@@ -51,6 +49,9 @@ public class FuncionarioController {
             funcionarioService.salvar(funcionarioExistente);
 
             return ResponseEntity.ok(new MessageWithArray("Funcionário atualizado com sucesso", null));
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new MessageWithArray("Funcionário não encontrado", null));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new MessageWithArray("Erro ao atualizar funcionário: " + e.getMessage(), null));
@@ -78,6 +79,5 @@ public class FuncionarioController {
 
     public record MessageWithArray(String message, List<Funcionario> list) {
     }
-
 
 }
