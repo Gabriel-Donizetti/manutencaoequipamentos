@@ -14,9 +14,9 @@ public interface SolicitacaoRepository extends JpaRepository<Solicitacao, Long> 
             "FROM solicitacao GROUP BY funcionario_id ORDER BY quantidade_solicitacoes ASC LIMIT 1", nativeQuery = true)
     Funcionario findFuncionarioComMenosSolicitacoes();
 
-    List<Solicitacao> findByClienteId(UUID clienteId);
+    List<Solicitacao> findByCliente_IdCliente(UUID clienteId);
 
-    List<Solicitacao> findByFuncionarioId(UUID funcionarioId);
+    List<Solicitacao> findByFuncionario_IdFuncionario(UUID funcionarioId);
     
 
 }

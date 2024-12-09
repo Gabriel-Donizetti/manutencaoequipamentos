@@ -57,7 +57,7 @@ public class SolicitacaoService {
     }
 
     public List<Solicitacao> listarTodosPorCliente(UUID clienteId) {
-        List<Solicitacao> solicitacoes = repository.findByClienteId(clienteId);
+        List<Solicitacao> solicitacoes = repository.findByCliente_IdCliente(clienteId);
 
         if (solicitacoes.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma solicitação encontrada para o cliente informado.");
@@ -67,7 +67,7 @@ public class SolicitacaoService {
     }
 
     public List<Solicitacao> listarTodosPorFuncionario(UUID funcionarioId) {
-        List<Solicitacao> solicitacoes = repository.findByFuncionarioId(funcionarioId);
+        List<Solicitacao> solicitacoes = repository.findByFuncionario_IdFuncionario(funcionarioId);
 
         if (solicitacoes.isEmpty()) {
             throw new EntityNotFoundException("Nenhuma solicitação encontrada para o funcionário informado.");
