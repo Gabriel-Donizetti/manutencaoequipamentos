@@ -11,10 +11,9 @@ import com.web2.manutencaoequipamentos.security.Token;
 import jakarta.transaction.Transactional;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/solicitacoes")
+@RequestMapping("/api/v1/solicitacoes")
 public class SolicitacaoController {
 
     @Autowired
