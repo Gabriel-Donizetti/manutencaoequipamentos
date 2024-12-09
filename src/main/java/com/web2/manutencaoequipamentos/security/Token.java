@@ -46,7 +46,7 @@ public abstract class Token {
 
     public static UUID getidAccount(JwtAuthenticationToken token) {
 
-        return UUID.fromString(getClaimFromToken(token, "idConta").toString());
+        return UUID.fromString(getClaimFromToken(token, "idUsuario").toString());
 
     }
 }
