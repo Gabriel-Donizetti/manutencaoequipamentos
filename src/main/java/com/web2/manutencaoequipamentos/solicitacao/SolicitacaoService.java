@@ -1,6 +1,8 @@
 package com.web2.manutencaoequipamentos.solicitacao;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,7 @@ public class SolicitacaoService {
             throw new EntityNotFoundException("Cliente não encontrado.");
         }
 
-        Funcionario funcionario = repository.findFuncionarioComMenosSolicitacoes();
+        Funcionario funcionario = buscarFuncionario();
 
         if (funcionario == null) {
             throw new EntityNotFoundException("Funcionário não encontrado.");
@@ -56,7 +58,10 @@ public class SolicitacaoService {
         solicitacao.setCliente(cliente);
         solicitacao.setFuncionario(funcionario);
 
-        return repository.save(solicitacao);
+        Solicitacao resultado = repository.save(solicitacao);
+
+        return resultado;
+
     }
 
     public List<Solicitacao> listarTodosPorCliente(UUID clienteId) {
@@ -95,5 +100,20 @@ public class SolicitacaoService {
         solicitacao.setDataFinalizada(update.getDataFinalizada());
 
         return repository.save(solicitacao);
+    }
+
+    public Funcionario buscarFuncionario() {
+        Object[] result = repository.findFuncionarioComMenosSolicitacoes();
+        if (result != null && result.length > 0) {
+            Funcionario funcionario = new Funcionario();
+
+            funcionario.setIdFuncionario(UUID.fromString(Objects.toString(result[0], null)));
+            funcionario.setCargo(Objects.toString(result[1], null));
+            funcionario.setDataNascimento(LocalDate.parse(Objects.toString(result[2], null)));
+
+            return funcionario;
+
+        }
+        return null;
     }
 }
