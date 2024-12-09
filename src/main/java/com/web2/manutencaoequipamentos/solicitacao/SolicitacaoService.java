@@ -38,7 +38,7 @@ public class SolicitacaoService {
     public Solicitacao createSolicitacao(CreateSolicitacaoDTO create, UUID id) {
         Solicitacao solicitacao = new Solicitacao();
 
-        Cliente cliente = clienteRepository.findById(create.getClienteId())
+        Cliente cliente = clienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
 
         Funcionario funcionario = repository.findFuncionarioComMenosSolicitacoes();
